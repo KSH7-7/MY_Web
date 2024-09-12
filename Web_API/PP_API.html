@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Recent Game Stats</title>
+    <style>
+        /* CSS 부분 - 페이지 스타일링 */
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f4f4f4;
+        }
+        #game-stats { 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            background: #fff; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h2 { 
+            margin-top: 0; 
+        }
+    </style>
+</head>
+<body>
+    <h1>My Recent Game Stats</h1>
+    <div id="game-stats">Loading...</div> <!-- 데이터가 표시될 영역 -->
+
+    <script>
+    const apiUrl = 'https://open.api.nexon.com/maplestory/v1/character/basic?ocid=a31eb419699425dcc4cc4ea6f09414e4efe8d04e6d233bd35cf2fabdeb93fb0d'; // 여기에 실제 게임 API URL을 입력하세요.
+    const additionalApiUrl = 'https://open.api.nexon.com/maplestory/v1/character/list';
+    const apiKey = 'test_c9cbd0b4e288c4a4baf33f79d24626cb5435076d09e380d66c602405d4841a7eefe8d04e6d233bd35cf2fabdeb93fb0d';
+    const fetchGameStats = async () => {
+            try {
+                const response = await fetch(apiUrl, { // 'urlString' 대신 'apiUrl'을 사용해야 합니다.
+                    headers:{
+                        "x-nxopen-api-key": apiKey // 'API_KEY'가 아닌 'apiKey'를 사용해야 합니다.
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log(data);
+                
+
+                // 데이터를 HTML에 표시하는 로직
+                const gameStatsDiv = document.getElementById('game-stats');
+                gameStatsDiv.innerHTML = `
+                   <h2>캐릭터 이름: ${data.character_name}</h2>
+                    <p><strong>레벨:</strong> ${data.character_level}</p>
+                    <p><strong>직업:</strong> ${data.character_class}</p>
+                    <p><strong>경험치 비율:</strong> ${data.character_exp_rate}%</p>
+                    <p><strong>길드:</strong> ${data.character_guild_name}</p>
+                    <p><strong>서버:</strong> ${data.world_name}</p>
+                    <p><strong>캐릭터 생성일:</strong> ${data.character_date_create}</p>
+                    <p><strong>해방 퀘스트 완료 여부:</strong> ${data.liberation_quest_clear_flag === 'true' ? 'Yes' : 'No'}</p>
+                    <p><strong></strong> <img src="${data.character_image}" alt="Character Image"></p>
+                `;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('game-stats').innerText = 'Failed to load game stats.';
+            }
+        };
+        // 두 번째 API 요청 - 캐릭터 목록
+        const fetchAdditionalStats = async () => {
+            try {
+                const response = await fetch(additionalApiUrl, {
+                    headers: {
+                        "x-nxopen-api-key": apiKey
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Additional Data:', data);
+
+                const additionalStatsDiv = document.getElementById('additional-stats');
+                additionalStatsDiv.innerHTML = `
+                    <h2>장비 정보</h2>
+                    <p><strong>무기:</strong> ${data.weapon}</p>
+                    <p><strong>방어구:</strong> ${data.armor}</p>
+                    <p><strong>장신구:</strong> ${data.accessories}</p>
+                `;
+            } catch (error) {
+                console.error('Error fetching additional data:', error);
+                document.getElementById('additional-stats').innerText = 'Failed to load additional stats.';
+            }
+        };
+
+        // 페이지 로드 시 데이터 가져오기
+        fetchGameStats();
+        fetchAdditionalStats();
+    </script>
+</body>
+</html>
