@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .contribution-graph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  #graph {
+    display: grid;
+    grid-template-columns: repeat(53, 12px); /* 53주 (1년) 기준 */
+    grid-gap: 2px;
+  }
+  
+  .cell {
+    width: 12px;
+    height: 12px;
+    background-color: #ebedf0;
+    border-radius: 2px;
+  }
+  
+  .cell.level-1 {
+    background-color: #c6e48b;
+  }
+  
+  .cell.level-2 {
+    background-color: #7bc96f;
+  }
+  
+  .cell.level-3 {
+    background-color: #239a3b;
+  }
+  
+  .cell.level-4 {
+    background-color: #196127;
+  }
+  
