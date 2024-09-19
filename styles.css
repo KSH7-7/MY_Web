@@ -1,0 +1,199 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(245, 245, 247);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 헤더 스타일 */
+header {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px 40px;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.nav-menu .home {
+    position: absolute;
+    left: 40px; /* "Home" 메뉴를 왼쪽에 고정 */
+}
+
+.nav-menu .home a {
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.nav-menu li a {
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    margin: 0 15px;
+    transition: color 0.3s;
+}
+
+.nav-menu li a:hover {
+    color: #0070f3; /* 원하는 호버 색상으로 변경 가능 */
+}
+
+/* 메인 콘텐츠 스타일 */
+main {
+    flex: 1;
+    padding: 40px;
+    text-align: center;
+}
+
+main h1 {
+    margin-bottom: 40px;
+    font-size: 32px;
+    color: #333;
+}
+
+/* 히스토리 그래프 스타일 */
+.history-graph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.graph {
+    display: grid;
+    grid-template-columns: repeat(52, 14px); /* 52주 */
+    grid-gap: 4px;
+}
+
+.week {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.day {
+    width: 14px;
+    height: 14px;
+    background-color: #ebedf0;
+    border-radius: 2px;
+    position: relative; /* 툴팁 위치를 위해 relative 설정 */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* 히스토리 그래프의 날별 색상 (예시) */
+.day.level-1 { background-color: #c6e48b; }
+.day.level-2 { background-color: #7bc96f; }
+.day.level-3 { background-color: #239a3b; }
+.day.level-4 { background-color: #196127; }
+
+/* 툴팁 스타일 */
+.day::after {
+    content: attr(data-games) " games on " attr(data-date);
+    position: absolute;
+    bottom: 150%; /* 블록 위로 표시 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 10;
+}
+
+.day:hover::after {
+    opacity: 1;
+}
+
+/* 화살표 (툴팁 아래에 삼각형) */
+.day::before {
+    content: '';
+    position: absolute;
+    bottom: 140%; /* 툴팁 아래에 위치 */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.75) transparent transparent transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 10;
+}
+
+.day:hover::before {
+    opacity: 1;
+}
+
+/* 푸터 스타일 */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    font-size: 14px;
+    color: #666;
+}
+
+footer .hidden-link {
+    text-decoration: none;
+    color: #666;
+    position: relative;
+}
+
+footer .hidden-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* 숨겨진 링크 스타일링 (예: 투명하게) */
+    background: transparent;
+    cursor: pointer;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    header {
+        padding: 20px;
+    }
+
+    .nav-menu .home {
+        position: static;
+        margin-right: auto;
+    }
+
+    .nav-menu {
+        justify-content: flex-start;
+    }
+
+    nav .nav-menu li a {
+        margin: 0 10px;
+    }
+
+    .graph {
+        grid-template-columns: repeat(26, 14px); /* 작은 화면에서는 주 수를 줄일 수 있음 */
+    }
+}
